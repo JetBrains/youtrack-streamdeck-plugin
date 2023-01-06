@@ -4,9 +4,9 @@
 	"CodePath": "app.html",
 	"Description": "Plugin to retrieve number of tickets returned by a YouTrack search query",
 	"Name": "YouTrack ticket counter",
-	"Icon": "actions/template/assets/action",
+	"Icon": "actions/get-ticket-count/assets/YouTrack_icon",
 	"URL": "https://www.elgato.com/en/gaming/stream-deck",
-	"Version": "1.0.0",
+	"Version": "1.0.1",
 	"Software": {
 		"MinimumVersion": "5.0"
 	},
