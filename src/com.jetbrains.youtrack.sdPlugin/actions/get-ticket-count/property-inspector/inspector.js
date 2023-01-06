@@ -2,68 +2,30 @@
 /// <reference path="../../../libs/js/utils.js" />
 
 $PI.onConnected(async (jsn) => {
-    showGloabalSettings()
-    showSettings(jsn);
-
-    function sleep(number) {
-        return new Promise(resolve => setTimeout(resolve, number));
-    }
-
-    sleep(100).then(() => {
-        $PI.sendToPlugin(jsn.actionInfo.payload)
-    })
-});
-
-function showGloabalSettings() {
-    $PI.onDidReceiveGlobalSettings((jsn) => {
-        const {event, payload} = jsn;
-        const {settings} = payload;
-
-        const form = document.querySelector('#global-settings');
-        Utils.setFormValue(settings, form);
-        CheckAndUpdateConnectionStatus(settings);
-        form.addEventListener(
-            'input',
-            Utils.debounce(150, () => {
-                const value = Utils.getFormValue(form);
-                $PI.setGlobalSettings(value);
-                CheckAndUpdateConnectionStatus(value);
-            })
-        );
-    });
-    $PI.getGlobalSettings();
-}
-
-function saveSettings() {
-    $PI.sendToPlugin(jsn.actionInfo.payload)
-
-}
-function showSettings(jsn) {
     const {actionInfo, appInfo, connection, messageType, port, uuid} = jsn;
     const {payload, context} = actionInfo;
     const {settings} = payload;
-    //Fill and save Search Query, Name, Refresh interval
+    showSettings(settings);
+    if (GetConnectionStatus(payload.settings["yt-url"], payload.settings["yt-token"]).ok) {
+        $PI.sendToPlugin(payload)
+    }
+
+});
+
+function showSettings(settings) {
     const form = document.querySelector('#property-inspector');
     Utils.setFormValue(settings, form);
-    AppendGlobalSettings(settings);
+    CheckAndUpdateConnectionStatus(settings);
     form.addEventListener(
         'input',
         Utils.debounce(150, () => {
             const value = Utils.getFormValue(form);
-            AppendGlobalSettings(value);
-
+            $PI.setSettings(value);
+            CheckAndUpdateConnectionStatus(value);
         })
     );
 }
 
-function AppendGlobalSettings(localSettings) {
-    $PI.onDidReceiveGlobalSettings((jsn) => {
-        const {event, payload} = jsn;
-        const {settings} = payload;
-        $PI.setSettings(Object.assign(localSettings, settings));
-    });
-    $PI.getGlobalSettings();
-}
 
 function CheckAndUpdateConnectionStatus(settings) {
     GetConnectionStatus(settings).then((connectionStatus) => {
@@ -102,20 +64,6 @@ async function GetConnectionStatus(settings) {
     }
     return connectionStatus.error = true;
 }
-
-function InitRefreshTitleTask(LocalPayload) {
-    LocalPayload.action = "initrefreshTask";
-
-}
-
-/**
- * Provide window level functions to use in the external window
- * (this can be removed if the external window is not used)
- */
-window.getPi = () => {
-    return $PI;
-};
-
 
 async function GetLoginInfo(url, token) {
     return await fetch(url + '/api/users/me?fields=id,login,name', {

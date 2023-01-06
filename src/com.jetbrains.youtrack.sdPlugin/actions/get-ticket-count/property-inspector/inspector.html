@@ -13,8 +13,8 @@
 </head>
 <body>
 <div class="sdpi-wrapper">
-    <div class="sdpi-heading">Global YouTrack instance configuration</div>
-    <form id="global-settings">
+    <form id="property-inspector">
+        <div class="sdpi-heading">YouTrack instance configuration</div>
         <div class="sdpi-item">
             <div class="sdpi-item-label">URL</div>
             <input class="sdpi-item-value" type="text" id="yt-url" name="yt-url" value="">
@@ -27,9 +27,7 @@
             <div class="sdpi-item-label">Status</div>
             <p class="sdpi-item-value" id="yt-connection-status"></p>
         </div>
-    </form>
-    <div class="sdpi-heading">Button configuration</div>
-    <form id="property-inspector">
+        <div class="sdpi-heading">Button configuration</div>
         <div type="textarea" class="sdpi-item">
             <div class="sdpi-item-label up20">Search Query</div>
             <div class="sdpi-item-value textarea">
@@ -55,13 +53,6 @@
 
         </div>
     </form>
-    <div class="sdpi-item" id="only_a_button">
-
-        <div class="sdpi-item-label empty"></div>
-
-        <button onclick="saveSettings()" class="sdpi-item-value" value="">Save</button>
-
-    </div>
 
 </div>
 
