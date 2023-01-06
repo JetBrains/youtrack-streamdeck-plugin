@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>com.jetbrains.youtrack Property Inspector</title>
+    <link rel="stylesheet" href="../../../libs/css/sdpi.css"/>
+</head>
+<body>
+<div class="sdpi-wrapper">
+    <div class="sdpi-heading">Global YouTrack instance configuration</div>
+    <form id="global-settings">
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">URL</div>
+            <input class="sdpi-item-value" type="text" id="yt-url" name="yt-url" value="">
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">Token</div>
+            <input type="password" class="sdpi-item-value" type="text" id="yt-token" name="yt-token" value="">
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">Status</div>
+            <p class="sdpi-item-value" id="yt-connection-status"></p>
+        </div>
+    </form>
+    <div class="sdpi-heading">Button configuration</div>
+    <form id="property-inspector">
+        <div type="textarea" class="sdpi-item">
+            <div class="sdpi-item-label up20">Search Query</div>
+            <div class="sdpi-item-value textarea">
+						<textarea
+                                name="yt-search-query"
+                                type="textarea"
+                                class="three-lines"
+                        ></textarea>
+            </div>
+        </div>
+        <div class="sdpi-item">
+
+            <div class="sdpi-item-label">Name</div>
+
+            <input class="sdpi-item-value" type="text" id="yt-search-name" name="yt-search-name" value="">
+
+        </div>
+        <div class="sdpi-item" id="anumber">
+
+            <div class="sdpi-item-label">Refresh every</div>
+
+            <input class="sdpi-item-value" id="refresh-interval" inputmode="numeric" pattern="[0-9]*" type="number" name="refresh-interval">
+
+        </div>
+    </form>
+    <div class="sdpi-item" id="only_a_button">
+
+        <div class="sdpi-item-label empty"></div>
+
+        <button onclick="saveSettings()" class="sdpi-item-value" value="">Save</button>
+
+    </div>
+
+</div>
+
+<div class="sdpi-info-label hidden" style="top: -1000" value=""></div>
+
+<!-- Stream Deck Libs -->
+<script src="../../../libs/js/constants.js"></script>
+<script src="../../../libs/js/prototypes.js"></script>
+<script src="../../../libs/js/timers.js"></script>
+<script src="../../../libs/js/utils.js"></script>
+<script src="../../../libs/js/events.js"></script>
+<script src="../../../libs/js/api.js"></script>
+<script src="../../../libs/js/property-inspector.js"></script>
+<script src="../../../libs/js/dynamic-styles.js"></script>
+
+<!-- Property Inspector Source -->
+<script src="inspector.js"></script>
+</body>
+</html>
