@@ -63,7 +63,7 @@ function APIRequest(context, settings) {
     }
 
     function startPollingLoop() {
-        let delay = settings["refreshInterval"] || 10;
+        let delay = settings["refreshInterval"] || 60;
         setTimeout(async () => {
             await sendRequest()
             if (poll_timer !== 0) {
