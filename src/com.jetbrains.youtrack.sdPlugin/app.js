@@ -47,20 +47,24 @@ function APIRequest(context, settings) {
     let firstRequestFinished = false;
 
     async function sendRequest() {
-        let ticketCount = await youTrack.GetTicketsCount();
-        let count = ticketCount.toString();
+        try {
+            let ticketCount = await youTrack.GetTicketsCount();
+            let count = ticketCount.toString();
         
-        if (settings["hide-zero"] === "on" && ticketCount === 0) {
-            count = "";
-        } else if (ticketCount === -1) {
-            count = "N/A";
+            if (settings["hide-zero"] === "on" && ticketCount === 0) {
+                count = "";
+            } else if (ticketCount === -1) {
+                count = "N/A";
+            }
+        
+            let name = settings["yt-search-name"];
+            let title = name.length > 0 ? name + "\n" + count : count;
+            firstRequestFinished = true;
+            console.log("updating title: " + title);
+            $SD.setTitle(context, title);
+        } catch (e) {
+            console.error(e)
         }
-        
-        let name = settings["yt-search-name"];
-        let title = name.length > 0 ? name + "\n" + count : count;
-        firstRequestFinished = true;
-        console.log("updating title: " + title);
-        $SD.setTitle(context, title);
     }
 
     function restartPeriodicPoll() {

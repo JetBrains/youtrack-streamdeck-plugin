@@ -27,7 +27,10 @@ class ELGSDApi {
 		this.actionInfo = actionString ? JSON.parse(actionString) : null;
 		this.appInfo = JSON.parse(appInfoString);
 		this.language = this.appInfo?.application?.language ?? null;
+		this.initWebSocket();
+	}
 
+	initWebSocket() {
 		if (this.websocket) {
 			this.websocket.close();
 			this.websocket = null;
@@ -66,7 +69,7 @@ class ELGSDApi {
 		this.websocket.onmessage = (evt) => {
 			const data = evt?.data ? JSON.parse(evt.data) : null;
 
-			const { action, event } = data;
+			const {action, event} = data;
 			const message = action ? `${action}.${event}` : event;
 			if (message && message !== '') this.emit(message, data);
 		};
@@ -157,6 +160,10 @@ class ELGSDApi {
 	 * @param {object} [payload]
 	 */
 	send(context, event, payload = {}) {
+		if (!this.websocket || this.websocket.readyState !== this.websocket.OPEN) {
+			console.warn('WebSocket closed, initWebSocket.');
+			this.initWebSocket();
+		}
 		this.websocket && this.websocket.send(JSON.stringify({ context, event, ...payload }));
 	}
 
