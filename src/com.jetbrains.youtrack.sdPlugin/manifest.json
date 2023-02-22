@@ -6,7 +6,7 @@
 	"Name": "YouTrack ticket counter",
 	"Icon": "actions/get-ticket-count/assets/YouTrack_icon",
 	"URL": "https://youtrack.jetbrains.com/",
-	"Version": "1.0.2",
+	"Version": "1.0.3",
 	"Software": {
 		"MinimumVersion": "5.0"
 	},
