@@ -58,7 +58,7 @@ function APIRequest(context, settings) {
                 count = "N/A";
             }
 
-            let name = settings["yt-search-name"];
+            let name = settings["yt-search-name"] || "";
             let title = name.length > 0 ? name + "\n" + count : count;
             firstRequestFinished = true;
             console.log("updating title: " + title);
@@ -104,7 +104,7 @@ function APIRequest(context, settings) {
                     if (dots.length > 3) {
                         dots = "";
                     }
-                    let name = settings["yt-search-name"];
+                    let name = settings["yt-search-name"] || "";
                     let title = name.length > 0 ? name + "\n" + dots : dots;
                     $SD.setTitle(context, title);
                 } else {
