@@ -44,7 +44,6 @@ function APIRequest(context, settings) {
             $SD.openUrl(url);
         }
     };
-    let poll_timer = 0;
     let firstRequestFinished = false;
 
     async function sendRequest() {
@@ -76,13 +75,11 @@ function APIRequest(context, settings) {
         youTrack.searchQuery = settings["yt-search-query"];
         youTrack.Ready = !!(youTrack.url && youTrack.token && youTrack.searchQuery);
         refreshTitleWhilePolling(Math.floor(Math.random() * 3000));
-        poll_timer = 1;
         startPollingLoop(Math.floor(Math.random() * 5) + 1);
     }
 
     function startPollingLoop(wait) {
-        myAction.polls[context] =
-        setTimeout(async () => {
+        myAction.polls[context] = setTimeout(async () => {
             await sendRequest()
             let delay = settings["refresh-interval"] || 60
             startPollingLoop(delay);
