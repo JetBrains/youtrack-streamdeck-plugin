@@ -11,10 +11,15 @@ function APIRequest(context, settings) {
         url: "",
         searchQuery: "",
         GetTicketsCount: async function () {
-            if (youTrack.ready) {
-                return await youTrack.RunQuery(youTrack.url, youTrack.token, youTrack.searchQuery);
-            } else {
-                return "Error";
+            try {
+                if (youTrack.ready) {
+                    return await youTrack.RunQuery(youTrack.url, youTrack.token, youTrack.searchQuery);
+                } else {
+                    return -1;
+                }
+            } catch (e) {
+                console.log(e.stack);
+                return -1;
             }
         },
         RunQuery: async function (url, token, query) {
@@ -43,7 +48,16 @@ function APIRequest(context, settings) {
 
     async function sendRequest() {
         let ticketCount = await youTrack.GetTicketsCount();
-        let title = settings["yt-search-name"] + "\n" + ticketCount;
+        let count = ticketCount.toString();
+        
+        if (settings["hide-zero"] === "on" && ticketCount === 0) {
+            count = "";
+        } else if (ticketCount === -1) {
+            count = "N/A";
+        }
+        
+        let name = settings["yt-search-name"];
+        let title = name.length > 0 ? name + "\n" + count : count;
         firstRequestFinished = true;
         console.log("updating title: " + title);
         $SD.setTitle(context, title);
@@ -58,8 +72,7 @@ function APIRequest(context, settings) {
         youTrack.ready = true;
         refreshTitleWhilePolling(Math.floor(Math.random() * 3000));
         poll_timer = 1;
-        startPollingLoop(Math.floor(Math.random() * 10) + 1)
-
+        startPollingLoop(Math.floor(Math.random() * 5) + 1);
     }
 
     function startPollingLoop(wait) {
@@ -87,7 +100,8 @@ function APIRequest(context, settings) {
                     if (dots.length > 3) {
                         dots = "";
                     }
-                    let title = settings["yt-search-name"] + "\n" + dots;
+                    let name = settings["yt-search-name"];
+                    let title = name.length > 0 ? name + "\n" + dots : dots;
                     $SD.setTitle(context, title);
                 } else {
                     clearInterval(id);
@@ -159,6 +173,3 @@ myAction.onWillDisappear(async ({action, context, device, event, payload}) => {
         delete myAction.cache[context];
     }
 })
-
-
-
