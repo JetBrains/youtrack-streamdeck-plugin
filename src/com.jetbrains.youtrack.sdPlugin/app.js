@@ -13,7 +13,7 @@ function APIRequest(context, settings) {
         searchQuery: "",
         GetTicketsCount: async function () {
             try {
-                if (youTrack.ready) {
+                if (youTrack.Ready) {
                     return await youTrack.RunQuery(youTrack.url, youTrack.token, youTrack.searchQuery);
                 } else {
                     return -1;
@@ -74,7 +74,7 @@ function APIRequest(context, settings) {
         youTrack.token = settings["yt-token"];
         youTrack.url = settings["yt-url"];
         youTrack.searchQuery = settings["yt-search-query"];
-        youTrack.ready = true;
+        youTrack.Ready = !!(youTrack.url && youTrack.token && youTrack.searchQuery);
         refreshTitleWhilePolling(Math.floor(Math.random() * 3000));
         poll_timer = 1;
         startPollingLoop(Math.floor(Math.random() * 5) + 1);
