@@ -3,6 +3,7 @@
 
 const myAction = new Action('com.jetbrains.youtrack.get-ticket-count');
 myAction.cache = {}
+
 function APIRequest(context, settings) {
     const youTrack = {
         Ready: false,
@@ -38,37 +39,67 @@ function APIRequest(context, settings) {
         }
     };
     let poll_timer = 0;
-    function sendRequest() {
-        youTrack.GetTicketsCount().then((ticketCount) => {
-            let title = settings["yt-search-name"] + "\n" + ticketCount;
-            $SD.setTitle(context, title);
-        });
+    let firstRequestFinished = false;
+
+    async function sendRequest() {
+        let ticketCount = await youTrack.GetTicketsCount();
+        let title = settings["yt-search-name"] + "\n" + ticketCount;
+        firstRequestFinished = true;
+        console.log("updating title: " + title);
+        $SD.setTitle(context, title);
     }
+
     function restartPeriodicPoll() {
         destroy();
+        firstRequestFinished = false;
         youTrack.token = settings["yt-token"];
         youTrack.url = settings["yt-url"];
         youTrack.searchQuery = settings["yt-search-query"];
         youTrack.ready = true;
-        let delay = settings["refreshInterval"]  || 10;
-        sendRequest();
-        poll_timer = setInterval(function (){
-            sendRequest()
-        },  1000 * delay)
+        refreshTitleWhilePolling();
+        poll_timer = 1;
+        startPollingLoop()
+
     }
+
+    function startPollingLoop() {
+        let delay = settings["refreshInterval"] || 10;
+        setTimeout(async () => {
+            await sendRequest()
+            if (poll_timer !== 0) {
+                startPollingLoop();
+            } else {
+                console.log("polling stopped");
+            }
+        }, delay * 1000);
+    }
+    function refreshTitleWhilePolling() {
+        let dots = "";
+        let id = setInterval(() => {
+            if (!firstRequestFinished) {
+                dots += ".";
+                if (dots.length > 3) { dots = ""; }
+                let title = settings["yt-search-name"] + "\n" + dots;
+                $SD.setTitle(context, title);
+            } else {
+                clearInterval(id);
+            }
+        }, 1000);
+    }
+
     function destroy() {
-        if (poll_timer !== 0) {
-            window.clearInterval(poll_timer);
-            poll_timer = 0;
-        }
+        poll_timer = 0;
     }
+
     function updateSettings(new_settings) {
         settings = new_settings;
         restartPeriodicPoll();
     }
+
     function OpenPage() {
         youTrack.OpenPage();
     }
+
     restartPeriodicPoll();
 
     return {
@@ -88,26 +119,29 @@ $SD.onConnected(({actionInfo, appInfo, connection, messageType, port, uuid}) => 
 });
 
 myAction.onKeyUp(({action, context, device, event, payload}) => {
-    //TODO: open Browser page with YouTrack query
     const api_request = myAction.cache[context];
-    console.log(api_request);
     if (!api_request)
         $SD.showAlert(context);
     else
         api_request.OpenPage();
-    console.log(payload)
-    console.log('Your key code goes here!');
 });
+myAction.onDidReceiveSettings(({action, context, device, event, payload}) => {
+    const settings = payload.settings;
+    const api_request = myAction.cache[context];
+
+    if (!settings || !api_request) return;
+
+    api_request.updateSettings(settings);
+    myAction.cache[context] = api_request;
+})
 myAction.onSendToPlugin(async ({action, context, device, event, payload}) => {
-    console.log(action, context, device, event, payload);
     if (action === 'com.jetbrains.youtrack.get-ticket-count') {
-        const apiRequest = new APIRequest(context, payload.settings);
-        myAction.cache[context] = apiRequest;
+        myAction.cache[context] = new APIRequest(context, payload.settings);
     }
 
 });
 myAction.onWillAppear(async ({action, context, device, event, payload}) => {
-    // myAction.cache[context] = new APIRequest(context, payload.settings);
+    myAction.cache[context] = new APIRequest(context, payload.settings);
 })
 myAction.onWillDisappear(async ({action, context, device, event, payload}) => {
     let api_request = myAction.cache[context];
