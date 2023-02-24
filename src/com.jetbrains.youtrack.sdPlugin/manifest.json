@@ -5,8 +5,8 @@
 	"Description": "Plugin to retrieve number of tickets returned by a YouTrack search query",
 	"Name": "YouTrack ticket counter",
 	"Icon": "actions/get-ticket-count/assets/YouTrack_icon",
-	"URL": "https://youtrack.jetbrains.com/",
-	"Version": "1.0.4",
+	"URL": "https://github.com/JetBrains/youtrack-streamdeck-plugin",
+	"Version": "1.0.5",
 	"Software": {
 		"MinimumVersion": "5.0"
 	},
@@ -24,24 +24,15 @@
 	"CategoryIcon": "actions/get-ticket-count/assets/YouTrack_icon",
 	"Actions": [
 		{
-			"Icon": "actions/get-ticket-count/assets/actionimage",
-			"Name": "Issues count by Search query",
-			"Controllers": ["Keypad", "Encoder"],
-			"Encoder": {
-				"layout": "$B1",
-				"TriggerDescription": {
-					"Rotate": "Describe the rotation",
-					"Push": "Describe the encoder push",
-					"Touch": "Describe the touch",
-					"LongTouch": "Describe the long touch"
-				}
-			},
+			"Icon": "actions/get-ticket-count/assets/action_image",
+			"Name": "Issues Count by Search Query",
+			"Controllers": ["Keypad"],
 			"States": [
 				{
 					"Image": "actions/get-ticket-count/assets/action"
 				}
 			],
-			"Tooltip": "This is an example tooltip",
+			"Tooltip": "",
 			"UUID": "com.jetbrains.youtrack.get-ticket-count",
 			"PropertyInspectorPath": "actions/get-ticket-count/property-inspector/inspector.html"
 		}
