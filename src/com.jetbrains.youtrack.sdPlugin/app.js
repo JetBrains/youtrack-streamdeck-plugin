@@ -56,35 +56,44 @@ function APIRequest(context, settings) {
         youTrack.url = settings["yt-url"];
         youTrack.searchQuery = settings["yt-search-query"];
         youTrack.ready = true;
-        refreshTitleWhilePolling();
+        refreshTitleWhilePolling(Math.floor(Math.random() * 3000));
         poll_timer = 1;
-        startPollingLoop()
+        startPollingLoop(Math.floor(Math.random() * 10) + 1)
 
     }
 
-    function startPollingLoop() {
-        let delay = settings["refreshInterval"] || 60;
+    function startPollingLoop(wait) {
+        console.log("starting polling loop with wait: " + wait);
         setTimeout(async () => {
             await sendRequest()
             if (poll_timer !== 0) {
-                startPollingLoop();
+                let delay = settings["refresh-interval"] || 60;
+                startPollingLoop(delay);
             } else {
                 console.log("polling stopped");
             }
-        }, delay * 1000);
+        }, wait * 1000);
     }
-    function refreshTitleWhilePolling() {
-        let dots = "";
-        let id = setInterval(() => {
-            if (!firstRequestFinished) {
-                dots += ".";
-                if (dots.length > 3) { dots = ""; }
-                let title = settings["yt-search-name"] + "\n" + dots;
-                $SD.setTitle(context, title);
-            } else {
-                clearInterval(id);
-            }
-        }, 1000);
+    function refreshTitleWhilePolling(wait = 1000) {
+        console.log("refreshing title while polling in " + wait);
+        let dots = ""
+        function sleep(wait) {
+            return new Promise(resolve => setTimeout(resolve, wait));
+        }
+        sleep(wait).then(() => {
+            let id = setInterval(() => {
+                if (!firstRequestFinished) {
+                    dots += ".";
+                    if (dots.length > 3) {
+                        dots = "";
+                    }
+                    let title = settings["yt-search-name"] + "\n" + dots;
+                    $SD.setTitle(context, title);
+                } else {
+                    clearInterval(id);
+                }
+            }, 1000);
+        });
     }
 
     function destroy() {
