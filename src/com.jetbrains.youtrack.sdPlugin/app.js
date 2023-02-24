@@ -3,6 +3,7 @@
 
 const myAction = new Action('com.jetbrains.youtrack.get-ticket-count');
 myAction.cache = {}
+myAction.polls = {}
 
 function APIRequest(context, settings) {
     const youTrack = {
@@ -50,13 +51,13 @@ function APIRequest(context, settings) {
         try {
             let ticketCount = await youTrack.GetTicketsCount();
             let count = ticketCount.toString();
-        
+
             if (settings["hide-zero"] === "on" && ticketCount === 0) {
                 count = "";
             } else if (ticketCount === -1) {
                 count = "N/A";
             }
-        
+
             let name = settings["yt-search-name"];
             let title = name.length > 0 ? name + "\n" + count : count;
             firstRequestFinished = true;
@@ -80,23 +81,22 @@ function APIRequest(context, settings) {
     }
 
     function startPollingLoop(wait) {
-        console.log("starting polling loop with wait: " + wait);
+        myAction.polls[context] =
         setTimeout(async () => {
             await sendRequest()
-            if (poll_timer !== 0) {
-                let delay = settings["refresh-interval"] || 60;
-                startPollingLoop(delay);
-            } else {
-                console.log("polling stopped");
-            }
+            let delay = settings["refresh-interval"] || 60
+            startPollingLoop(delay);
         }, wait * 1000);
     }
+
     function refreshTitleWhilePolling(wait = 1000) {
         console.log("refreshing title while polling in " + wait);
         let dots = ""
+
         function sleep(wait) {
             return new Promise(resolve => setTimeout(resolve, wait));
         }
+
         sleep(wait).then(() => {
             let id = setInterval(() => {
                 if (!firstRequestFinished) {
@@ -115,7 +115,10 @@ function APIRequest(context, settings) {
     }
 
     function destroy() {
-        poll_timer = 0;
+        if (myAction.polls[context]) {
+            clearTimeout(myAction.polls[context]);
+            myAction.polls[context] = {};
+        }
     }
 
     function updateSettings(new_settings) {
