@@ -34,6 +34,7 @@
 			],
 			"Tooltip": "",
 			"UUID": "com.jetbrains.youtrack.get-ticket-count",
+			"UserTitleEnabled": false,
 			"PropertyInspectorPath": "actions/get-ticket-count/property-inspector/inspector.html"
 		}
 	]
