@@ -90,14 +90,17 @@ class PeriodicYouTrackRequest {
         this.settings["last-result"] = "";
         this.restart()
     }
+
     destroy() {
         this.timers.stopAll();
         console.log("destroyed all timers. Active timers:" + this.timers.activeTimers);
     }
+
     restart() {
         this.destroy()
         this.start();
     }
+
     start() {
         let restartPeriodicPoll = () => {
             this.destroy();
@@ -120,7 +123,7 @@ class PeriodicYouTrackRequest {
 
         let refreshValue = async () => {
             let ticketCount = await sendRequest()
-            this.timers.stopByName( "refreshIndicator")
+            this.timers.stopByName("refreshIndicator")
             if (ticketCount !== -1) {
                 updateLastResult(ticketCount)
                 setTileValue(ticketCount)
@@ -134,7 +137,7 @@ class PeriodicYouTrackRequest {
             $SD.setSettings(this.context, this.settings);
         }
 
-        let IndicateOngoingRefresh = (wait = 500) =>{
+        let IndicateOngoingRefresh = (wait = 500) => {
             let dots = "";
             let title = "";
             let indicatorFunction = () => {
@@ -168,6 +171,7 @@ class PeriodicYouTrackRequest {
         this.fillYTSettings(this.settings);
         restartPeriodicPoll()
     }
+
     //todo: move fillYTSettings to youTrack object
     fillYTSettings = () => {
         this.youTrack.token = this.settings["yt-token"];
@@ -175,6 +179,7 @@ class PeriodicYouTrackRequest {
         this.youTrack.searchQuery = this.settings["yt-search-query"];
         this.youTrack.Ready = !!(this.youTrack.url && this.youTrack.token && this.youTrack.searchQuery);
     }
+
     constructor(context, settings) {
         this.settings = settings;
         this.context = context;

@@ -1,41 +1,43 @@
 {
-	"SDKVersion": 2,
-	"Author": "Konstantin Annikov",
-	"CodePath": "app.html",
-	"Description": "Plugin to retrieve number of tickets returned by a YouTrack search query",
-	"Name": "YouTrack ticket counter",
-	"Icon": "actions/get-ticket-count/assets/YouTrack_icon",
-	"URL": "https://github.com/JetBrains/youtrack-streamdeck-plugin",
-	"Version": "1.0.5",
-	"Software": {
-		"MinimumVersion": "5.0"
-	},
-	"OS": [
-		{
-			"Platform": "mac",
-			"MinimumVersion": "10.11"
-		},
-		{
-			"Platform": "windows",
-			"MinimumVersion": "10"
-		}
-	],
-	"Category": "YouTrack",
-	"CategoryIcon": "actions/get-ticket-count/assets/YouTrack_icon",
-	"Actions": [
-		{
-			"Icon": "actions/get-ticket-count/assets/action_image",
-			"Name": "Issues Count by Search Query",
-			"Controllers": ["Keypad"],
-			"States": [
-				{
-					"Image": "actions/get-ticket-count/assets/action"
-				}
-			],
-			"Tooltip": "",
-			"UUID": "com.jetbrains.youtrack.get-ticket-count",
-			"UserTitleEnabled": false,
-			"PropertyInspectorPath": "actions/get-ticket-count/property-inspector/inspector.html"
-		}
-	]
+  "SDKVersion": 2,
+  "Author": "Konstantin Annikov",
+  "CodePath": "app.html",
+  "Description": "Plugin to retrieve number of tickets returned by a YouTrack search query",
+  "Name": "YouTrack ticket counter",
+  "Icon": "actions/get-ticket-count/assets/YouTrack_icon",
+  "URL": "https://github.com/JetBrains/youtrack-streamdeck-plugin",
+  "Version": "1.0.5",
+  "Software": {
+    "MinimumVersion": "5.0"
+  },
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "10.11"
+    },
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Category": "YouTrack",
+  "CategoryIcon": "actions/get-ticket-count/assets/YouTrack_icon",
+  "Actions": [
+    {
+      "Icon": "actions/get-ticket-count/assets/action_image",
+      "Name": "Issues Count by Search Query",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "actions/get-ticket-count/assets/action"
+        }
+      ],
+      "Tooltip": "",
+      "UUID": "com.jetbrains.youtrack.get-ticket-count",
+      "UserTitleEnabled": false,
+      "PropertyInspectorPath": "actions/get-ticket-count/property-inspector/inspector.html"
+    }
+  ]
 }
