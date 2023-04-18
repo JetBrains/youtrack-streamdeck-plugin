@@ -92,32 +92,30 @@ class PeriodicYouTrackRequest {
     }
     destroy() {
         this.timers.stopAll();
+        console.log("destroyed all timers. Active timers:" + this.timers.activeTimers);
     }
     restart() {
         this.destroy()
         this.start();
     }
     start() {
-        let restartPeriodicPoll = () =>{
+        let restartPeriodicPoll = () => {
             this.destroy();
             IndicateOngoingRefresh();
             this.timers.newPeriodicTask("periodic-poll", refreshValue, this.settings["refresh-interval"] * 1000 || 60 * 1000);
         }
-        let sendRequest = async () =>{
+        let sendRequest = async () => {
+            let ticketCount = await this.youTrack.GetTicketsCount();
+            let count = -1;
             try {
-                let ticketCount = await this.youTrack.GetTicketsCount();
-                let count = ticketCount.toString();
-                if (this.settings["hide-zero"] === "on" && ticketCount === 0) {
-                    count = "";
-                } else if (ticketCount === -1) {
-                    count = -1;
-                }
-                return count;
+                count = ticketCount.toString();
             } catch (e) {
-                console.error("Could not get ticket count: ");
-                console.error(e)
-                return -1;
+                console.error("Could not get ticket count from response: ", +ticketCount);
             }
+            if (this.settings["hide-zero"] === "on" && ticketCount === 0) {
+                count = "";
+            }
+            return count;
         }
 
         let refreshValue = async () => {
