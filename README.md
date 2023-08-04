@@ -1,4 +1,4 @@
-
+[![official JetBrains project](https://jb.gg/badges/official-flat-square.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
 # Stream Deck YouTrack Plugin
 
 The `Stream Deck YouTrack Plugin` is a plugin to show the number of tickets in a YouTrack project on   [Stream Deck](https://developer.elgato.com/documentation/stream-deck/)
