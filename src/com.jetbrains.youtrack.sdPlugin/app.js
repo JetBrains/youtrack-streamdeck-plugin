@@ -26,7 +26,7 @@ class PeriodicYouTrackRequest {
             }
         },
         RunQuery: async function (url, token, query) {
-            url = url + '/api/issues?fields=idReadable,summary,votes,customFields(projectCustomField(field(name)),value(name))&$top=500&query=' + this.EscapeQuery(query)
+            url = url + '/api/issues?fields=idReadable,summary,votes,customFields(projectCustomField(field(name)),value(name))&$top=99999&query=' + this.EscapeQuery(query)
             console.log("executing: " + query);
             let response = await fetch(url, {
                 method: 'GET',

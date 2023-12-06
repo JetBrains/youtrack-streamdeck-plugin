@@ -6,7 +6,7 @@
   "Name": "YouTrack ticket counter",
   "Icon": "actions/get-ticket-count/assets/YouTrack_icon",
   "URL": "https://github.com/JetBrains/youtrack-streamdeck-plugin",
-  "Version": "1.0.6",
+  "Version": "1.0.7",
   "Software": {
     "MinimumVersion": "5.0"
   },
